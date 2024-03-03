@@ -50,7 +50,7 @@ const Quiz = () => {
 
 
 
-  const tema:string = 'Tecnología'
+  const tema:string = 'Tecnología';
 
 
 

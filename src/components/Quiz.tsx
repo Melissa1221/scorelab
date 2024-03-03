@@ -3,55 +3,38 @@ import {Grid, Paper} from '@mui/material'
 import QuestionMultiple from './QuestionMultiple';
 import '../styles/formTeacher.css'
 import '../styles/quiz.css'
-import * as React from 'react';
+import {useState, useEffect} from 'react';
+import axios from 'axios';
+import { useLocation  } from 'react-router-dom'
 
 interface PropsData {
-  tema: string, 
-  question:string,
-  answer: string,
-  options: string[]
-  data: object;
+  pregunta:string,
+  respuesta: string,
+  opciones: string[]
 }
 
-const response = [
-
-  {
-    "question": "¿Quién ideó la primera computadora mecánica?",
-    "options": [
-      "Charles Babbage",
-      "Alan Turing",
-      "Ada Lovelace"
-    ],
-    "answer": "Charles Babbage"
-  },
-  {
-    "question": "¿Qué sistema operativo dominó el mercado después de UNIX?",
-    "options": [
-      "Microsoft Windows",
-      "Linux",
-      "Android"
-    ],
-    "answer": "Microsoft Windows"
-  },
-  {
-    "question": "¿Qué tecnología permitió el intercambio instantáneo de información a escala global?",
-    "options": [
-      "Correo postal",
-      "Teléfono",
-      "Internet"
-    ],
-    "answer": "Internet"
-  }
-
-]
-
 const Quiz = () => {
+  const location = useLocation()
+  const rutaActual = location.pathname
+  const id = rutaActual.substring(rutaActual.lastIndexOf('/') + 1)
 
+  const [tema, setTema] = useState('');
+  const [response, setResponse] = useState<PropsData[]>([]);
 
-
-
-  const tema:string = 'Tecnología'
-
+  useEffect(() => {
+    
+    axios.get(`${import.meta.env.VITE_REACT_API_URL}/api/questionnaires/${id}`)
+    .then((response) => {
+      console.log(response.data);
+      setTema(response.data.title);
+      setResponse(response.data.questions.questions);
+    }).then((error) => {
+      console.log(error);
+      
+    })
+  
+  
+  }, [id]); 
 
 
 
@@ -79,7 +62,7 @@ const Quiz = () => {
               return (
                 <Box key={index} sx={{display:'flex', flexDirection: 'column', gap:'1rem', alignItems:'start', justifyContent:'left', justifyItems:'left'}}>
                   
-                  <QuestionMultiple question={question.question} options={question.options} answer={question.answer}/>
+                  <QuestionMultiple question={question.pregunta} options={question.opciones} answer={question.respuesta}/>
                   
                 </Box>
               )

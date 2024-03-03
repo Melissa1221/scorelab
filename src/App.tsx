@@ -20,7 +20,7 @@ function App() {
           <Route path="/" element={<LandingPage/>}/>
           <Route path="/login" element={<LoginTeachers/>}/>
           <Route path="/login/generador" element={<Sidebar/>}/>
-          <Route path="/quiz" element = {<Quiz/>}/>
+          <Route path="/questionnaires/:id" element={<Quiz/>}/>
         </Routes>
       </Router>
       
